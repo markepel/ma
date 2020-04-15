@@ -23,6 +23,8 @@ class ImageStreamer(threading.Thread):
                     self.connection.flush()
                     self.stream.seek(0)
                     self.connection.write(self.stream.read())
+                except Exception as e:
+                    loggging.info('error sending to connection')
                 finally:
                     self.stream.seek(0)
                     self.stream.truncate()

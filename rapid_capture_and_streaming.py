@@ -6,7 +6,20 @@ import picamera
 from config import tilda_ip, tilda_port, camera_resolution, camera_framerate, streaming_time, retry_count
 import io
 import logging
-logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)s {%(module)s} [%(funcName)s] %(message)s', datefmt='%Y-%m-%d,%H:%M:%S', level=logging.INFO)
+logger = logging.getLogger('ma_ap')
+logger.setLevel(logging.INFO)
+# create file handler which logs even debug messages
+fh = logging.FileHandler('ma.log')
+# create console handler with a higher log level
+ch = logging.StreamHandler()
+# create formatter and add it to the handlers
+formatter = logging.Formatter('%(asctime)s.%(msecs)03d -  %(levelname)s - %(name)s - {%(module)s} - [%(funcName)s] - %(message)s')
+fh.setFormatter(formatter)
+ch.setFormatter(formatter)
+# add the handlers to the logger
+logger.addHandler(fh)
+logger.addHandler(ch)
+# logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)s {%(module)s} [%(funcName)s] %(message)s', datefmt='%Y-%m-%d,%H:%M:%S', level=logging.INFO)
 from image_streamer import ImageStreamer
 from camera_manager import CameraManager
 
@@ -55,7 +68,7 @@ from camera_manager import CameraManager
 for i in range(retry_count):
     try:
         connection_lock = threading.Lock()
-        logging.info('retrying')
+        logger.info('retrying')
         time.sleep(5)
         new_socket = socket.socket()
         new_socket.connect((tilda_ip, tilda_port))
@@ -75,7 +88,7 @@ for i in range(retry_count):
     except Exception as e:
         logging.error('Exception when retrying streaming {}'.format(e), exc_info=True)
         try:
-            logging.info(f'camera_manager.get_total_images_count {camera_manager.get_total_images_count()}')
+            logging.info(f'Total images sent {camera_manager.get_total_images_count()} on fps {camera_manager.get_fps()}')
         except:
             pass
     finally:

@@ -1,5 +1,6 @@
 from config import camera_resolution, camera_framerate
 import time
+import picamera
 
 class CameraManager():
     def __init__(self, streamer):
@@ -7,12 +8,13 @@ class CameraManager():
         self.count = 0
 
     def start_capturing(self):
-        camera.resolution = camera_resolution
-        camera.framerate = camera_framerate
-        time.sleep(2)
-        logging.info('camera is ready')
-        self.start = time.time()
-        camera.capture_sequence(self.streamer_setter_generator(self.streamer), 'jpeg', use_video_port=True)
+        with picamera.PiCamera() as camera:
+            camera.resolution = camera_resolution
+            camera.framerate = camera_framerate
+            time.sleep(2)
+            logging.info('camera is ready')
+            self.start = time.time()
+            camera.capture_sequence(self.streamer_setter_generator(self.streamer), 'jpeg', use_video_port=True)
 
     def streamer_setter_generator(self):
         logging.info('streaming starts')

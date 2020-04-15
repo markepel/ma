@@ -49,7 +49,7 @@ try:
     def streamer_setter_generator(streamer):
         global count, finish
         logging.info('streaming starts')
-        while finish - start < 1800:
+        while finish - start < 60:
             yield streamer.stream
             streamer.event.set()
             count += 1

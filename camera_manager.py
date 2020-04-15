@@ -25,13 +25,14 @@ class CameraManager():
             camera.capture_sequence(self.streamer_setter_generator(), 'jpeg', use_video_port=True)
 
     def streamer_setter_generator(self):
-        logger.info('streaming starts')
+        logger.info('CameraManager streaming starts')
         while self.finish - self.start < config.streaming_time:
-            logger.info(f'streaming stream is {self.streamer.stream}')
+            # logger.info(f'streaming stream is {self.streamer.stream}')
             yield self.streamer.stream
             self.streamer.event.set()
             self.count += 1
             # self.finish = time.time()
+        logging.info('CameraManager streaming ends')
         self.finish = time.time()
     
     def get_total_images_count(self):

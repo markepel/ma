@@ -15,6 +15,7 @@ class CameraManager():
             time.sleep(2)
             logging.info('camera is ready')
             self.start = time.time()
+            self.finish = time.time()
             camera.capture_sequence(self.streamer_setter_generator(), 'jpeg', use_video_port=True)
 
     def streamer_setter_generator(self):

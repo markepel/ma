@@ -79,7 +79,7 @@ for i in range(retry_count):
         try:
             new_connection.close()
             new_socket.close()
-        except Exception as e::
+        except Exception as e:
             logger.error('Exception when retrying to close connection and socket {}'.format(e), exc_info=True)
 
 

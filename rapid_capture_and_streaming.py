@@ -74,7 +74,10 @@ for i in range(retry_count):
         logging.info('connection write ends')
     except Exception as e:
         logging.error('Exception when retrying streaming{}'.format(e), exc_info=True)
-        logging.info(f'camera_manager.get_total_images_count {camera_manager.get_total_images_count()}')
+        try:
+            logging.info(f'camera_manager.get_total_images_count {camera_manager.get_total_images_count()}')
+        except:
+            pass
     finally:
         try:
             new_connection.close()

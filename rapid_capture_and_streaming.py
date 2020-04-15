@@ -72,9 +72,9 @@ for i in range(retry_count):
         time.sleep(5)
         new_socket = socket.socket()
         new_socket.connect((tilda_ip, tilda_port))
-        logging.info('connecting to {}:{}...'.format(tilda_ip, tilda_port))
+        logger.info('connecting to {}:{}...'.format(tilda_ip, tilda_port))
         new_connection = new_socket.makefile('wb')
-        logging.info('connected to {}:{}'.format(tilda_ip, tilda_port))
+        logger.info('connected to {}:{}'.format(tilda_ip, tilda_port))
         new_streamer = ImageStreamer(new_connection)
         camera_manager = CameraManager(new_streamer)
         camera_manager.start_capturing()
@@ -82,13 +82,13 @@ for i in range(retry_count):
         new_streamer.terminated = True
         new_streamer.join()
         with connection_lock:
-            logging.info('new_connection write last')
+            logger.info('new_connection write last')
             new_connection.write(struct.pack('<L', 0))
-        logging.info('connection write ends')
+        logger.info('connection write ends')
     except Exception as e:
-        logging.error('Exception when retrying streaming {}'.format(e), exc_info=True)
+        logger.error('Exception when retrying streaming {}'.format(e), exc_info=True)
         try:
-            logging.info(f'Total images sent {camera_manager.get_total_images_count()} on fps {camera_manager.get_fps()}')
+            logger.info(f'Total images sent {camera_manager.get_total_images_count()} on fps {camera_manager.get_fps()}')
         except:
             pass
     finally:
@@ -96,7 +96,7 @@ for i in range(retry_count):
             new_socket.close()
             new_connection.close()
         except Exception as e:
-            logging.error('Exception when retrying to close connection and socket {}'.format(e), exc_info=True)
+            logger.error('Exception when retrying to close connection and socket {}'.format(e), exc_info=True)
 
 
 

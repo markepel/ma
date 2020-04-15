@@ -2,6 +2,8 @@ import struct
 import threading
 import io
 import logging
+logger = logging.getLogger('ma_ap')
+
 
 
 class ImageStreamer(threading.Thread):
@@ -27,7 +29,7 @@ class ImageStreamer(threading.Thread):
                     self.stream.seek(0)
                     self.stream.truncate()
                     self.event.clear()
-                    logging.info('error sending to connection')
+                    logger.info('error sending to connection')
                     self.stream = None
                 finally:
                     self.stream.seek(0)

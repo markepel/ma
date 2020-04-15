@@ -1,6 +1,7 @@
 from config import camera_resolution, camera_framerate
 import time
 import picamera
+import logging
 
 class CameraManager():
     def __init__(self, streamer):

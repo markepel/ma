@@ -2,6 +2,7 @@ from config import camera_resolution, camera_framerate
 import time
 import picamera
 import logging
+import config
 
 class CameraManager():
     def __init__(self, streamer):
@@ -20,7 +21,7 @@ class CameraManager():
 
     def streamer_setter_generator(self):
         logging.info('streaming starts')
-        while self.finish - self.start < streaming_time:
+        while self.finish - self.start < config.streaming_time:
             logging.info(f'streaming stream is {self.streamer.stream}')
             yield self.streamer.stream
             self.streamer.event.set()

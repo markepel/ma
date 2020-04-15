@@ -28,7 +28,7 @@ try:
         global count, finish
         logging.info('streaming starts')
         while finish - start < streaming_time:
-            logging.info(f'streaming stream is {streamer.streamer}')
+            logging.info(f'streaming stream is {streamer.stream}')
             yield streamer.stream
             streamer.event.set()
             count += 1

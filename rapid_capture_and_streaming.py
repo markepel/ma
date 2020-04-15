@@ -3,7 +3,7 @@ import struct
 import time
 import threading
 import picamera
-from config import tilda_ip, tilda_port, camera_resolution, camera_framerate
+from config import tilda_ip, tilda_port, camera_resolution, camera_framerate, streaming_time
 import io
 import logging
 logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)s {%(module)s} [%(funcName)s] %(message)s', datefmt='%Y-%m-%d,%H:%M:%S', level=logging.INFO)

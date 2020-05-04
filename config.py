@@ -6,3 +6,4 @@ camera_framerate=3
 videocamera_resolution=(1920, 1080)
 streaming_time=60
 retry_count=30
+video_folder="/home/pi/video"

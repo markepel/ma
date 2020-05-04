@@ -15,7 +15,7 @@ class CameraManager():
         
     def start_capturing(self):
         with picamera.PiCamera() as camera:
-            camera.resolution = config.camera_resolution
+            camera.resolution = (1296, 972)
             camera.framerate = config.camera_framerate
             time.sleep(2)
             logger.info('camera is ready')
@@ -23,7 +23,7 @@ class CameraManager():
             video_thread.start()
             self.start = time.time()
             
-            camera.capture_sequence(self.streamer_setter_generator(), 'jpeg', use_video_port=True)
+            camera.capture_sequence(self.streamer_setter_generator(), 'jpeg', use_video_port=True, resize=config.camera_resolution)
 
     def start_capturing_and_recording(self, camera):
         try:

@@ -15,7 +15,7 @@ class CameraManager():
         
     def start_capturing(self):
         with picamera.PiCamera() as camera:
-            camera.resolution = (1296, 972)
+            camera.resolution = config.videocamera_resolution
             camera.framerate = config.camera_framerate
             time.sleep(2)
             logger.info('camera is ready')
@@ -35,7 +35,7 @@ class CameraManager():
             logger.info('videocamera is ready')
             
             camera.start_recording('highres.h264', splitter_port=1)
-            camera.wait_recording(30)
+            camera.wait_recording(60)
             camera.stop_recording(splitter_port=1)
         except Exception as e:
             logger.info('exception in start_capturing_and_recording {}'.format(e))

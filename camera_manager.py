@@ -1,4 +1,4 @@
-from config import camera_resolution, camera_framerate
+import config
 import time
 import picamera
 import logging
@@ -9,35 +9,46 @@ class CameraManager():
     def __init__(self, streamer):
         self.streamer = streamer
         self.count = 0
-        self.finish = time.time()
         self.start = time.time()
         
         
     def start_capturing(self):
         with picamera.PiCamera() as camera:
-            camera.resolution = camera_resolution
-            camera.framerate = camera_framerate
+            camera.resolution = config.camera_resolution
+            camera.framerate = config.camera_framerate
             time.sleep(2)
             logger.info('camera is ready')
-            self.finish = time.time()
             self.start = time.time()
             
             camera.capture_sequence(self.streamer_setter_generator(), 'jpeg', use_video_port=True)
 
+    def start_capturing_and_recording():
+        try:
+            logger.info('start_capturing_and_recording starts')
+            with picamera.PiCamera() as camera:
+                camera.resolution = config.videocamera_resolution
+                camera.framerate = config.videocamera_framerate
+                time.sleep(2)
+                logger.info('videocamera is ready')
+                
+                camera.start_recording('highres.h264')
+                camera.wait_recording(30)
+                camera.stop_recording()
+        except Exception as e:
+            logger.info('exception in start_capturing_and_recording {}'.format(e))
+            raise e
+
+
     def streamer_setter_generator(self):
         logger.info('CameraManager streaming starts')
-        while self.finish - self.start < config.streaming_time:
-            # logger.info(f'streaming stream is {self.streamer.stream}')
+        while True:
             yield self.streamer.stream
             self.streamer.event.set()
             self.count += 1
-            # self.finish = time.time()
         logging.info('CameraManager streaming ends')
-        self.finish = time.time()
     
     def get_total_images_count(self):
         return self.count
     
     def get_fps(self):
-        # finish = self.finish if hasattr(self, 'finish') and self.finish else time.time()
-        return (self.finish-self.start)/count if self.finish >= self.start else 0
+        return (time.time()-self.start)/count

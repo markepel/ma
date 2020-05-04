@@ -30,9 +30,9 @@ def start_secure():
             new_connection = new_socket.makefile('wb')
             logger.info('connected to {}:{}'.format(tilda_ip, tilda_port))
             new_streamer = ImageStreamer(new_connection)
+            # video_thread = threading.Thread(target=camera_manager.start_capturing_and_recording)
+            # video_thread.start()
             camera_manager = CameraManager(new_streamer)
-            video_thread = threading.Thread(target=camera_manager.start_capturing_and_recording)
-            video_thread.start()
             camera_manager.start_capturing()
             
             new_streamer.terminated = True

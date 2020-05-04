@@ -4,6 +4,7 @@ import picamera
 import logging
 logger = logging.getLogger('ma_ap')
 import config
+import threading
 
 class CameraManager():
     def __init__(self, streamer):
@@ -18,22 +19,24 @@ class CameraManager():
             camera.framerate = config.camera_framerate
             time.sleep(2)
             logger.info('camera is ready')
+            video_thread = threading.Thread(target=self.start_capturing_and_recording, args=(camera,))
+            video_thread.start()
             self.start = time.time()
             
             camera.capture_sequence(self.streamer_setter_generator(), 'jpeg', use_video_port=True)
 
-    def start_capturing_and_recording(self):
+    def start_capturing_and_recording(self, camera):
         try:
             logger.info('start_capturing_and_recording starts')
-            with picamera.PiCamera() as camera:
-                camera.resolution = config.videocamera_resolution
-                camera.framerate = config.videocamera_framerate
-                time.sleep(2)
-                logger.info('videocamera is ready')
-                
-                camera.start_recording('highres.h264', splitter_port=2)
-                camera.wait_recording(30)
-                camera.stop_recording()
+            # with picamera.PiCamera() as camera:
+            # camera.resolution = config.videocamera_resolution
+            # camera.framerate = config.videocamera_framerate
+            time.sleep(2)
+            logger.info('videocamera is ready')
+            
+            camera.start_recording('highres.h264', splitter_port=1)
+            camera.wait_recording(30)
+            camera.stop_recording(splitter_port=1)
         except Exception as e:
             logger.info('exception in start_capturing_and_recording {}'.format(e))
             raise e

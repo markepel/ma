@@ -22,7 +22,7 @@ class CameraManager():
             
             camera.capture_sequence(self.streamer_setter_generator(), 'jpeg', use_video_port=True)
 
-    def start_capturing_and_recording():
+    def start_capturing_and_recording(self):
         try:
             logger.info('start_capturing_and_recording starts')
             with picamera.PiCamera() as camera:

@@ -31,7 +31,7 @@ class CameraManager():
                 time.sleep(2)
                 logger.info('videocamera is ready')
                 
-                camera.start_recording('highres.h264')
+                camera.start_recording('highres.h264', splitter_port=2)
                 camera.wait_recording(30)
                 camera.stop_recording()
         except Exception as e:

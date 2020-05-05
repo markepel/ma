@@ -33,7 +33,7 @@ class CameraManager():
         except Exception as e:
             t, value, t2 = sys.exc_info()
             logger.info('exception in start_capturing {} {}'.format(t, value))
-            traceback.print_tb(err.__traceback__)
+            traceback.print_tb(e.__traceback__)
 
     def start_video_recording(self, camera):
         while True:
@@ -50,7 +50,7 @@ class CameraManager():
             except Exception as e:
                 t, value, t2 = sys.exc_info()
                 logger.info('exception in start_video_recording {} {}'.format(t, value))
-                traceback.print_tb(err.__traceback__)
+                traceback.print_tb(e.__traceback__)
                 time.sleep(10)
 
 

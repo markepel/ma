@@ -5,6 +5,8 @@ import logging
 logger = logging.getLogger('ma_ap')
 import config
 import threading
+import sys
+
 
 class CameraManager():
     def __init__(self, streamer):
@@ -29,12 +31,16 @@ class CameraManager():
         try:
             while True:
                 logger.info('start_video_recording starts')
+                raise NotImplementedError('NNotImplementedError')
                 camera.start_recording('{}/{}.h264'.format(config.video_folder, time.strftime("%d_%m_%Y_%H_%M_%S")), splitter_port=1)
+                logger.info('start_video_recording after start_recording')
                 camera.wait_recording(60)
+                logger.info('start_video_recording before stop')
                 camera.stop_recording(splitter_port=1)
-        except Exception as e:
-            logger.info('exception in start_video_recording {}'.format(e))
-            raise e
+                logger.info('start_video_recording stopped')
+        except Exception:
+            t, value, traceback = sys.exc_info()
+            logger.info('exception in start_video_recording {} {} {}'.format(t, value, traceback))
 
 
     def streamer_setter_generator(self):

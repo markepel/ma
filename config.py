@@ -5,5 +5,5 @@ camera_resolution=(640, 480)
 camera_framerate=3
 videocamera_resolution=(1280, 720)
 streaming_time=60
-retry_count=30
+retry_count=3000
 video_folder="/home/pi/video"

@@ -38,7 +38,8 @@ def start_secure():
             logger.info('new_connection write last')
             new_connection.write(struct.pack('<L', 0))
             logger.info('connection write ends')
-        except Exception:
+        except Exception as e:
+            logger.info('exception  start_secure {}'.format(e))
             t, value, traceback = sys.exc_info()
             logger.info('{}{}{}'.format(t, value, traceback))
             logger.error('Exception when retrying streaming {} {} {}'.format(t, value, traceback), exc_info=True)
@@ -50,7 +51,8 @@ def start_secure():
             try:
                 new_socket.close()
                 new_connection.close()
-            except Exception:
+            except Exception as e:
+                logger.info('Exception 2 start_secure {}'.format(e))
                 t, value, traceback = sys.exc_info()
                 logger.info('{}{}{}'.format(t, value, traceback))
                 logger.error('Exception when retrying to close connection and socket {} {} {}'.format(t, value, traceback), exc_info=True)

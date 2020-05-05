@@ -38,7 +38,8 @@ class CameraManager():
                 logger.info('start_video_recording before stop')
                 camera.stop_recording(splitter_port=1)
                 logger.info('start_video_recording stopped')
-        except Exception:
+        except Exception as e:
+            logger.info('Exception start_video_recording {}'.format(e))
             t, value, traceback = sys.exc_info()
             logger.info('exception in start_video_recording {} {} {}'.format(t, value, traceback))
 

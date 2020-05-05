@@ -40,7 +40,7 @@ class CameraManager():
             try:
                 
                     logger.info('start_video_recording starts')
-                    raise NotImplementedError('NNotImplementedError')
+                    # raise NotImplementedError('NNotImplementedError')
                     camera.start_recording('{}/{}.h264'.format(config.video_folder, time.strftime("%d_%m_%Y_%H_%M_%S")), splitter_port=1)
                     logger.debug('start_video_recording after start_recording')
                     camera.wait_recording(60)

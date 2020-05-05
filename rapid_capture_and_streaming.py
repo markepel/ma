@@ -44,7 +44,6 @@ def start_secure():
         except Exception as e:
             t, value, t2 = sys.exc_info()
             logger.error('Exception when retrying streaming {} {}'.format(t, value), exc_info=True)
-            logger.info('###duplicate###Exception  when retrying streaming {} {}'.format(t, value))
             traceback.print_tb(e.__traceback__)
             try:
                 logger.info(f'Total images sent {camera_manager.get_total_images_count()} on fps {camera_manager.get_fps()}')
@@ -57,7 +56,6 @@ def start_secure():
             except Exception as e:
                 t, value, t2 = sys.exc_info()
                 logger.error('Exception when retrying to close connection and socket {} {}'.format(t, value), exc_info=True)
-                logger.error('@@@duplicate@@@Exception when retrying to close connection and socket {} {}'.format(t, value))
                 traceback.print_tb(e.__traceback__)
 
 

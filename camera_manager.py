@@ -16,7 +16,9 @@ class CameraManager():
         
         
     def start_capturing(self):
+        logger.info('start capturing')
         with picamera.PiCamera() as camera:
+            logger.info('got camera')
             camera.resolution = config.videocamera_resolution
             camera.framerate = config.camera_framerate
             time.sleep(2)

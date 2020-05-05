@@ -18,6 +18,7 @@ logger.addHandler(ch)
 from image_streamer import ImageStreamer
 from camera_manager import CameraManager
 import sys
+import traceback
 
 def start_secure():   
     for i in range(retry_count):
@@ -41,9 +42,10 @@ def start_secure():
             new_connection.write(struct.pack('<L', 0))
             logger.info('connection write ends')
         except Exception as e:
-            t, value, traceback = sys.exc_info()
-            logger.error('Exception when retrying streaming {} {} {}'.format(t, value, traceback.print_tb()), exc_info=True)
-            logger.info('###duplicate###Exception  when retrying streaming {} {} {}'.format(t, value, traceback.print_tb()))
+            t, value, t2 = sys.exc_info()
+            logger.error('Exception when retrying streaming {} {}'.format(t, value), exc_info=True)
+            logger.info('###duplicate###Exception  when retrying streaming {} {}'.format(t, value))
+            traceback.print_tb(err.__traceback__)
             try:
                 logger.info(f'Total images sent {camera_manager.get_total_images_count()} on fps {camera_manager.get_fps()}')
             except:
@@ -53,9 +55,10 @@ def start_secure():
                 new_socket.close()
                 new_connection.close()
             except Exception as e:
-                t, value, traceback = sys.exc_info()
-                logger.error('Exception when retrying to close connection and socket {} {} {}'.format(t, value, traceback.print_tb()), exc_info=True)
-                logger.error('@@@duplicate@@@Exception when retrying to close connection and socket {} {} {}'.format(t, value, traceback.print_tb()))
+                t, value, t2 = sys.exc_info()
+                logger.error('Exception when retrying to close connection and socket {} {}'.format(t, value), exc_info=True)
+                logger.error('@@@duplicate@@@Exception when retrying to close connection and socket {} {}'.format(t, value)
+                traceback.print_tb(err.__traceback__)
 
 
 if __name__ == "__main__":

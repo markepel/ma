@@ -6,6 +6,7 @@ logger = logging.getLogger('ma_ap')
 import config
 import threading
 import sys
+import traceback
 
 
 class CameraManager():
@@ -30,8 +31,9 @@ class CameraManager():
                 
                 camera.capture_sequence(self.streamer_setter_generator(), 'jpeg', use_video_port=True, resize=config.camera_resolution)
         except Exception as e:
-            t, value, traceback = sys.exc_info()
+            t, value, t2 = sys.exc_info()
             logger.info('exception in start_capturing {} {}'.format(t, value))
+            traceback.print_tb(err.__traceback__)
 
     def start_video_recording(self, camera):
         while True:
@@ -46,7 +48,7 @@ class CameraManager():
                     camera.stop_recording(splitter_port=1)
                     logger.info('start_video_recording stopped')
             except Exception as e:
-                t, value, traceback = sys.exc_info()
+                t, value, t2 = sys.exc_info()
                 logger.info('exception in start_video_recording {} {}'.format(t, value))
                 time.sleep(10)
 

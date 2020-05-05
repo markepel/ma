@@ -30,6 +30,8 @@ class ImageStreamer(threading.Thread):
                     self.stream.truncate()
                     self.event.clear()
                     logger.info('error sending to connection')
+                    t, value, traceback = sys.exc_info()
+                    logger.info('exception in start_capturing {} {} {}'.format(t, value, traceback.print_exc()))
                     self.stream = None
                 finally:
                     self.stream.seek(0)

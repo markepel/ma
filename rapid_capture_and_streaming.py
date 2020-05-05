@@ -41,10 +41,9 @@ def start_secure():
             new_connection.write(struct.pack('<L', 0))
             logger.info('connection write ends')
         except Exception as e:
-            logger.info('exception  start_secure {}'.format(e))
             t, value, traceback = sys.exc_info()
-            logger.info('{}{}{}'.format(t, value, traceback))
-            logger.error('Exception when retrying streaming {} {} {}'.format(t, value, traceback), exc_info=True)
+            logger.error('Exception when retrying streaming {} {} {}'.format(t, value, traceback.print_exc()), exc_info=True)
+            logger.info('###duplicate###Exception  when retrying streaming {} {} {}'.format(t, value, traceback.print_exc()))
             try:
                 logger.info(f'Total images sent {camera_manager.get_total_images_count()} on fps {camera_manager.get_fps()}')
             except:
@@ -54,10 +53,9 @@ def start_secure():
                 new_socket.close()
                 new_connection.close()
             except Exception as e:
-                logger.info('Exception 2 start_secure {}'.format(e))
                 t, value, traceback = sys.exc_info()
-                logger.info('{}{}{}'.format(t, value, traceback))
-                logger.error('Exception when retrying to close connection and socket {} {} {}'.format(t, value, traceback), exc_info=True)
+                logger.error('Exception when retrying to close connection and socket {} {} {}'.format(t, value, traceback.print_exc()), exc_info=True)
+                logger.error('@@@duplicate@@@Exception when retrying to close connection and socket {} {} {}'.format(t, value, traceback.print_exc()))
 
 
 if __name__ == "__main__":

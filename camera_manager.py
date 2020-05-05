@@ -17,33 +17,38 @@ class CameraManager():
         
     def start_capturing(self):
         logger.info('start capturing')
-        with picamera.PiCamera() as camera:
-            logger.info('got camera')
-            camera.resolution = config.videocamera_resolution
-            camera.framerate = config.camera_framerate
-            time.sleep(2)
-            logger.info('camera is ready')
-            video_thread = threading.Thread(target=self.start_video_recording, args=(camera,))
-            video_thread.start()
-            self.start = time.time()
-            
-            camera.capture_sequence(self.streamer_setter_generator(), 'jpeg', use_video_port=True, resize=config.camera_resolution)
+        try:
+            with picamera.PiCamera() as camera:
+                logger.info('got camera')
+                camera.resolution = config.videocamera_resolution
+                camera.framerate = config.camera_framerate
+                time.sleep(2)
+                logger.info('camera is ready')
+                video_thread = threading.Thread(target=self.start_video_recording, args=(camera,))
+                video_thread.start()
+                self.start = time.time()
+                
+                camera.capture_sequence(self.streamer_setter_generator(), 'jpeg', use_video_port=True, resize=config.camera_resolution)
+        except Exception as e:
+            t, value, traceback = sys.exc_info()
+            logger.info('exception in start_capturing {} {} {}'.format(t, value, traceback.print_exc()))
 
     def start_video_recording(self, camera):
-        try:
-            while True:
-                logger.info('start_video_recording starts')
-                raise NotImplementedError('NNotImplementedError')
-                camera.start_recording('{}/{}.h264'.format(config.video_folder, time.strftime("%d_%m_%Y_%H_%M_%S")), splitter_port=1)
-                logger.info('start_video_recording after start_recording')
-                camera.wait_recording(60)
-                logger.info('start_video_recording before stop')
-                camera.stop_recording(splitter_port=1)
-                logger.info('start_video_recording stopped')
-        except Exception as e:
-            logger.info('Exception start_video_recording {}'.format(e))
-            t, value, traceback = sys.exc_info()
-            logger.info('exception in start_video_recording {} {} {}'.format(t, value, traceback))
+        while True:
+            try:
+                
+                    logger.info('start_video_recording starts')
+                    raise NotImplementedError('NNotImplementedError')
+                    camera.start_recording('{}/{}.h264'.format(config.video_folder, time.strftime("%d_%m_%Y_%H_%M_%S")), splitter_port=1)
+                    logger.debug('start_video_recording after start_recording')
+                    camera.wait_recording(60)
+                    logger.debug('start_video_recording before stop')
+                    camera.stop_recording(splitter_port=1)
+                    logger.info('start_video_recording stopped')
+            except Exception as e:
+                t, value, traceback = sys.exc_info()
+                logger.info('exception in start_video_recording {} {} {}'.format(t, value, traceback.print_exc()))
+                time.sleep(10)
 
 
     def streamer_setter_generator(self):

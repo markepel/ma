@@ -30,7 +30,9 @@ def start_secure():
             new_connection = new_socket.makefile('wb')
             logger.info('connected to {}:{}'.format(tilda_ip, tilda_port))
             new_streamer = ImageStreamer(new_connection)
+            logger.info('Image streamer created ')
             camera_manager = CameraManager(new_streamer)
+            logger.info('camera_manager created ')
             camera_manager.start_capturing()
             
             new_streamer.terminated = True
